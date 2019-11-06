@@ -1,0 +1,1 @@
+* There is still some work to be done to make a good ISO20022 direct debit file for switzerland that comply with the guidelines of SIX Interbank Clearing. That's why this module is not installable for the moment.
