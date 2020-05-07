@@ -29,3 +29,5 @@
     'auto_install': False,
     'installable': True,
 }
+
+# old postal account for res_partner_bank(4032): 010306797
