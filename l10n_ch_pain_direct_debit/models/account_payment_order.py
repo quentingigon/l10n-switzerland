@@ -157,7 +157,7 @@ class AccountPaymentOrder(models.Model):
             local_instrument_root = etree.SubElement(payment_type_info,
                                                      'LclInstrm')
             # <PmtInf>/<PmtTpInf>/<SvcLvl>/  <Prtry>
-            if self.company_partner_bank_id.acc_type in ('postal', 'iban', "bank"):
+            if self.company_partner_bank_id.acc_type in ('postal', 'iban'):
                 service_level_value = etree.SubElement(service_level, 'Prtry')
                 local_instr_value = \
                     etree.SubElement(local_instrument_root, 'Prtry')
@@ -169,7 +169,6 @@ class AccountPaymentOrder(models.Model):
                     prtry_value = 'CHTA'
                     local_instrument = 'LSV+'
                     for line in self.bank_line_ids:
-                        # TODO look if we need to set prtry_value too
                         line.local_instrument = local_instrument
                 service_level_value.text = prtry_value
                 local_instr_value.text = local_instrument
@@ -224,6 +223,9 @@ class AccountPaymentOrder(models.Model):
                 etree.SubElement(party_agent_clearing, 'MmbId')
             party_agent_clearing_identification.text = \
                 partner_bank.bank_id.clearing.zfill(5)
+            ccp_other = etree.SubElement(party_agent_institution, 'Othr')
+            ccp_other_id = etree.SubElement(ccp_other, 'Id')
+            ccp_other_id.text = self.company_partner_bank_id.l10n_ch_postal
             res = True
         else:
             res = super(AccountPaymentOrder, self).generate_party_agent(
