@@ -117,7 +117,7 @@ class AccountPaymentOrder(models.Model):
     def generate_start_payment_info_block(
         self, parent_node, payment_info_ident,
         priority, local_instrument, category_purpose, sequence_type,
-        requested_date, sepa, eval_ctx, gen_args):
+            requested_date, sepa, eval_ctx, gen_args):
         """ This is overridden because pain.008.001.03.ch.01 uses a different
             XML structure. The code is basically the same that can be found
             on the module account_banking_pain_base's method
@@ -418,7 +418,6 @@ class AccountPaymentOrder(models.Model):
                     "self.name + '-' "
                     "+ str(requested_date) + '-' + priority + "
                     "'-' + local_instrument",
-                    # TODO replace the False just before eval_ctx by sepa boolean
                     prio, local_inst, False, False, req_date, False, eval_ctx={
                         'self': self,
                         'priority': prio,
@@ -447,7 +446,8 @@ class AccountPaymentOrder(models.Model):
                 creditor_scheme_identification,
                 'self.payment_mode_id.initiating_party_identifier or '
                 'self.company_id.initiating_party_identifier',
-                'SEPA Creditor Identifier', {'self': self}, scheme_name_proprietary, gen_args)
+                'SEPA Creditor Identifier', {'self': self},
+                scheme_name_proprietary, gen_args)
 
             # <PmtInf>/  <DrctDbtTxInf>
             self.generate_dd_transaction_information(
