@@ -385,7 +385,6 @@ class AccountPaymentOrder(models.Model):
             parent_node = remittance_info
         super().generate_remittance_info_block(parent_node, line, gen_args)
 
-
     @api.multi
     def generate_xml_ch_dd_file(self):
         self.ensure_one()
