@@ -371,6 +371,21 @@ class AccountPaymentOrder(models.Model):
 
         return True
 
+    @api.model
+    def generate_remittance_info_block(self, parent_node, line, gen_args):
+        if line.local_instrument == "LSV+":
+            remittance_info = etree.SubElement(
+                parent_node, 'RmtInf')
+            remittance_info_unstructured = etree.SubElement(
+                remittance_info, 'Ustrd')
+            remittance_info_unstructured.text = self._prepare_field(
+                'Remittance Unstructured Information',
+                'line.communication', {'line': line}, 140,
+                gen_args=gen_args)
+            parent_node = remittance_info
+        super().generate_remittance_info_block(parent_node, line, gen_args)
+
+
     @api.multi
     def generate_xml_ch_dd_file(self):
         self.ensure_one()
