@@ -382,8 +382,22 @@ class AccountPaymentOrder(models.Model):
                 'Remittance Unstructured Information',
                 'line.communication', {'line': line}, 140,
                 gen_args=gen_args)
-            parent_node = remittance_info
-        super().generate_remittance_info_block(parent_node, line, gen_args)
+            remittance_info_structured = etree.SubElement(
+                remittance_info, 'Strd')
+            creditor_ref_information = etree.SubElement(
+                remittance_info_structured, 'CdtrRefInf')
+            creditor_ref_info_type = etree.SubElement(
+                creditor_ref_information, 'Tp')
+            creditor_ref_info_type_or = etree.SubElement(
+                creditor_ref_info_type, 'CdOrPrtry')
+            creditor_ref_info_type_code = etree.SubElement(
+                creditor_ref_info_type_or, 'Prtry')
+            creditor_ref_info_type_code.text = 'ESR'
+            creditor_reference = etree.SubElement(
+                creditor_ref_information, 'Ref')
+            creditor_reference.text = line.payment_line_ids[0].communication
+        else:
+            super().generate_remittance_info_block(parent_node, line, gen_args)
 
     @api.multi
     def generate_xml_ch_dd_file(self):
