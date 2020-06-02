@@ -438,6 +438,7 @@ class AccountPaymentOrder(models.Model):
         index = 0
         for (req_date, prio, local_inst), lines in \
                 list(lines_per_group.items()):
+
             # Creates the tags <PmtInf>/  [<PmtInfId>, <PmtMtd>,
             # <PmtTpInf>, <ReqdColltnDt>]
             payment_info, nb_of_transactions_b, control_sum_b = \
@@ -461,8 +462,7 @@ class AccountPaymentOrder(models.Model):
             creditor_scheme_identification = \
                 etree.SubElement(payment_info, 'CdtrSchmeId')
 
-            if not local_inst:
-                local_inst = lines[index].local_instrument
+            local_inst = lines[index].local_instrument
 
             scheme_name_proprietary = ""
             if local_inst == "DDCOR1":
